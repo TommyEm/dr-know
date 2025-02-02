@@ -1,6 +1,6 @@
 {
-	"name": "knightcyber",
-	"displayName": "Knightcyber",
+	"name": "dr-know",
+	"displayName": "Dr. Know",
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
@@ -14,8 +14,8 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "knightcyber.start",
-				"title": "Knightcyber: Start"
+				"command": "dr-know.start",
+				"title": "Dr. Know: Start"
 			}
 		]
 	},
