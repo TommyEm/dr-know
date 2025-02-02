@@ -26,9 +26,15 @@ export function activate(context: vscode.ExtensionContext) {
 			panel.webview.html = getWebviewContent();
 
 			panel.webview.onDidReceiveMessage(async (message: any) => {
-				if (message.command === "chat") {
+				if (message.command === "abort") {
+					// Stop current stream
+					ollama.abort();
+				} else if (message.command === "chat") {
 					const userPrompt = message.text;
 					let responseText = "";
+
+					// Stop already current stream if any
+					ollama.abort();
 
 					try {
 						const streamResponse = await ollama.chat({
@@ -75,6 +81,7 @@ function getWebviewContent() {
 			<textarea id="prompt" rows="3" placeholder="Ask something..."></textarea><br>
 			<button id="askBtn">Ask</button>
 			<div id="response"></div>
+			<button id="abortBtn">Abort</button>
 
 			<script>
 				const vscode = acquireVsCodeApi();
@@ -83,6 +90,10 @@ function getWebviewContent() {
 					const text = document.getElementById('prompt').value;
 					vscode.postMessage({ command: 'chat', text });
 				});
+
+				document.getElementById('abortBtn').addEventListener('click', () => {
+					vscode.postMessage({ command: 'abort' })
+				})
 
 				window.addEventListener('message', event => {
 					const { command, text } = event.data;
